@@ -6,9 +6,11 @@ using namespace sf;
 Circle::Circle(float radius, Color color) {
     trailMovement = false;
     this->radius = radius;
+    startRadius = radius;
     circle = CircleShape(radius);
     this->color = color;
     circle.setFillColor(color);
+    startColor = color;
 }
 FloatRect Circle::getGlobalBounds() {
     return circle.getGlobalBounds();
@@ -17,7 +19,7 @@ FloatRect Circle::getGlobalBounds() {
 void Circle::move(float x, float y, RenderWindow& window) {
     Vector2f movement(x, y);
     position += movement;
-    
+    movementHistory.push_back(position);
     if (circle.getPosition().x > window.getSize().x) {
         position.x = 0;
     }
@@ -31,25 +33,26 @@ void Circle::move(float x, float y, RenderWindow& window) {
         position.y = 0;
     }
     circle.setPosition(position); 
-    movementHistory.push_back(position);
-}
-void Circle::draw(RenderWindow& window, bool withTrail) {
-    window.draw(circle);
-    if (withTrail) {
-        for (const auto& position : movementHistory) {
+    if (this->getTrailMovement()) {
+        for (auto position_ : movementHistory) {
             CircleShape trailCircle;
             trailCircle.setRadius(radius);
             trailCircle.setFillColor(this->color);
-            trailCircle.setPosition(position);
+            trailCircle.setPosition(position_);
             window.draw(trailCircle);
+            window.display();
         }
+        
     }
 }
+void Circle::draw(RenderWindow& window) {
+    window.draw(circle);
+}
 void Circle::setScale(float x, float y) {
-
+    circle.setScale(x, y);
 }
 Vector2f Circle::getPosition() {
-    return circle.getTransform().transformPoint(circle.getPosition());
+    return circle.getPosition();
 }
 bool Circle::updateWindowCollision(RenderWindow& window) {
     return true;
@@ -83,7 +86,6 @@ void Circle::autoMove(RenderWindow& window) {
             position.x = currentX + radius * std::cos(angle * (3.14159 / 180.0));
             position.y = currentY + radius * std::sin(angle * (3.14159 / 180.0));
             circle.setPosition(position);
-            movementHistory.push_back(position);
             window.clear();
             window.draw(circle);
             window.display();

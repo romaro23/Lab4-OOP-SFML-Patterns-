@@ -8,15 +8,31 @@ class Square : public Figure
 {
 private:
     float side;
+    float startSide;
+    Color startColor;
     RectangleShape square;
     Vector2f position;
+    Vector2f startPosition;
     std::vector<Vector2f> movementHistory;
 public:
     Square(float side, Color color);
     FloatRect getGlobalBounds() override;
+    void setTrailMovement(bool move) override {
+        trailMovement = move;
+    }
+    bool getTrailMovement() override {
+        return trailMovement;
+    }
+    void restore() override {
+        square.setFillColor(startColor);
+        color = startColor;
+        square.setPosition(startPosition);
+        position = startPosition;
+        square.setScale(Vector2f(1.2f, 1.2f));
+    }
     void move(float x, float y, RenderWindow& window) override;
 
-    void draw(RenderWindow& window, bool withTrail) override;
+    void draw(RenderWindow& window) override;
 
     void setScale(float x, float y) override;
 

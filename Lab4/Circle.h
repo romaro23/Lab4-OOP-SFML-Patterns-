@@ -8,15 +8,31 @@ class Circle : public Figure
 {
 private:
     float radius;
+    float startRadius;
+    Color startColor;
     CircleShape circle;
     Vector2f position;
+    Vector2f startPosition = this->position;
     std::vector<Vector2f> movementHistory;
 public:
     Circle(float radius, Color color);
     FloatRect getGlobalBounds() override;
+    void setTrailMovement(bool move) {
+        trailMovement = move;
+    }
+    bool getTrailMovement() {
+        return trailMovement;
+    }
+    void restore() override {
+        circle.setFillColor(startColor);
+        color = startColor;
+        circle.setPosition(startPosition);
+        position = startPosition;
+        circle.setScale(Vector2f(0.9f, 0.9f));
+    }
     void move(float x, float y, RenderWindow& window) override;
 
-    void draw(RenderWindow& window, bool withTrail) override;
+    void draw(RenderWindow& window) override;
 
     void setScale(float x, float y) override;
 

@@ -128,20 +128,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="CompositeFigure.cpp" />
     <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="FigurePrototype.cpp" />
     <ClCompile Include="Lab4.cpp" />
     <ClCompile Include="Square.cpp" />
-    <ClCompile Include="Triangle.cpp" />
+    <ClCompile Include="WindowWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="CompositeFigure.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="FigurePrototype.h" />
     <ClInclude Include="MyColor.h" />
     <ClInclude Include="Square.h" />
-    <ClInclude Include="Triangle.h" />
+    <ClInclude Include="WindowWrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

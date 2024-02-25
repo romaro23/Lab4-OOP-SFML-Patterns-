@@ -6,15 +6,17 @@ using namespace sf;
 Square::Square(float side, Color color) {
     trailMovement = false;
     this->side = side;
+    startSide = side;
     square = RectangleShape(Vector2f(side, side));
     this->color = color;
     square.setFillColor(color);
+    startColor = color;
 }
 
 void Square::move(float x, float y, RenderWindow& window) {
     Vector2f movement(x, y);
     position += movement;
-        
+    movementHistory.push_back(position);
     if (square.getPosition().x > window.getSize().x) {
         position.x = 0;
     }
@@ -27,30 +29,31 @@ void Square::move(float x, float y, RenderWindow& window) {
     if (square.getPosition().y > window.getSize().y) {
         position.y = 0;
     }
+    
     square.setPosition(position);
-    movementHistory.push_back(position);
+    if (this->getTrailMovement()) {
+        for (auto position_ : movementHistory) {
+            RectangleShape trailSquare;
+            trailSquare.setSize(Vector2f(side, side));
+            trailSquare.setFillColor(this->color);
+            trailSquare.setPosition(position_);
+            window.draw(trailSquare);
+            window.display();
+        }       
+    }
+    
 }
 FloatRect Square::getGlobalBounds() {
     return square.getGlobalBounds();
 }
-void Square::draw(RenderWindow& window, bool withTrail) {
+void Square::draw(RenderWindow& window) {
     window.draw(square);
-    if (withTrail) {
-        for (const auto& position : movementHistory) {
-            RectangleShape trailSquare;
-            trailSquare.setSize(Vector2f(side, side));
-            trailSquare.setFillColor(this->color);
-            trailSquare.setPosition(position);
-            window.draw(trailSquare);
-        }
-    }
-    
 }
 void Square::setScale(float x, float y) {
-
+    square.setScale(x, y);
 }
 Vector2f Square::getPosition() {
-    return square.getTransform().transformPoint(square.getPosition());
+    return square.getPosition();
 }
 bool Square::updateWindowCollision(RenderWindow& window) {
     return true;
@@ -84,7 +87,6 @@ void Square::autoMove(RenderWindow& window) {
             position.x = currentX + radius * std::cos(angle * (3.14159 / 180.0));
             position.y = currentY + radius * std::sin(angle * (3.14159 / 180.0));
             square.setPosition(position);
-            movementHistory.push_back(position);
             window.clear();
             window.draw(square);
             window.display();
@@ -94,23 +96,27 @@ void Square::autoMove(RenderWindow& window) {
         }
         std::cout << "RShift" << std::endl;
     }
-
 }
 void Square::setColor(MyColor color) {
     switch (color) {
     case Red:
+        this->color = Color::Red;
         square.setFillColor(Color::Red);
         break;
     case Blue:
+        this->color = Color::Blue;
         square.setFillColor(Color::Blue);
         break;
     case Green:
+        this->color = Color::Green;
         square.setFillColor(Color::Green);
         break;
     case Yellow:
+        this->color = Color::Yellow;
         square.setFillColor(Color::Yellow);
         break;
     case White:
+        this->color = Color::White;
         square.setFillColor(Color::White);
         break;
     }
