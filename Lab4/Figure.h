@@ -22,5 +22,6 @@ public:
 	virtual void move(float x, float y, RenderWindow& window) = 0;
 	virtual void setOutline(float thickness, Color color) = 0;
 	virtual void setColor(MyColor color) = 0;
+	virtual Figure* clone() = 0;
 };
 

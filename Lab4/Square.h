@@ -30,6 +30,9 @@ public:
         position = startPosition;
         square.setScale(Vector2f(1.2f, 1.2f));
     }
+    Figure* clone() override {
+        return new Square(this->side, this->color);
+    }
     void move(float x, float y, RenderWindow& window) override;
 
     void draw(RenderWindow& window) override;

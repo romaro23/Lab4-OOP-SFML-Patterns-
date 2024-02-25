@@ -30,6 +30,9 @@ public:
         position = startPosition;
         circle.setScale(Vector2f(0.9f, 0.9f));
     }
+    Figure* clone() override {
+        return new Circle(this->radius, this->color);
+    }
     void move(float x, float y, RenderWindow& window) override;
 
     void draw(RenderWindow& window) override;

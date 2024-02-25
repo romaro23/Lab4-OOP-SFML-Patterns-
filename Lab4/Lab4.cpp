@@ -3,6 +3,7 @@
 #include "Square.h"
 #include "CompositeFigure.h"
 #include "WindowWrapper.h"
+#include "FigurePrototype.h"
 #include "MyColor.h"
 #include <vector>
 #include <iostream>
@@ -78,9 +79,10 @@ int main() {
 	cout << "R - restore, C - color, S - show, H - hide, Enter - start auto move, RShift - stop, arrows - move" << endl;
 	RenderWindow& window = WindowWrapper::getWindow();
 	CompositeFigure figure;
+	CompositeFigure copy;
 	vector<Figure*> figures;
 	Figure* figure1 = new Square(100.0f, Color::Green);
-	Figure* figure2 = new Circle(50.0f, Color::Blue);	
+	Figure* figure2 = new Circle(50.0f, Color::Blue);
 	figure1->setTrailMovement(true);
 	figure.combine(new Square(120.0f, Color::Yellow));	
 	figure.move(100.0f, 100.0f, window);
@@ -116,6 +118,10 @@ int main() {
 					figures.erase(it);
 					figures.push_back(&figure);
 					active = nullptr;
+
+					FigurePrototype prototype(&figure);
+					copy = *prototype.cloneComposite();
+					figures.push_back(&copy);
 				}
 				handleKeyPress(event.key.code, *active, window);			
 			}			
@@ -123,6 +129,7 @@ int main() {
 		sleep(milliseconds(100));
 		window.clear();
 		figure.draw(window);
+		copy.draw(window);
 		figure1->draw(window);
 		figure2->draw(window);
 		window.display();
