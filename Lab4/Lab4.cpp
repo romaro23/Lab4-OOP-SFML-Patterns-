@@ -82,13 +82,18 @@ int main() {
 	CompositeFigure copy;
 	vector<Figure*> figures;
 	Figure* figure1 = new Square(100.0f, Color::Green);
+	/*FigurePrototype copy1(figure1);
+	Figure* figure3 = copy1.cloneFromRepository();
+	Figure* figure4 = copy1.cloneFromRepository();
+	delete figure1;*/
 	Figure* figure2 = new Circle(50.0f, Color::Blue);
 	figure1->setTrailMovement(true);
 	figure.combine(new Square(120.0f, Color::Yellow));	
 	figure.move(100.0f, 100.0f, window);
 	figures.push_back(figure1);
 	figures.push_back(figure2);
-	
+	//figures.push_back(figure3);
+	//figures.push_back(figure4);
 	Figure* active = nullptr;
 	while (window.isOpen()) {		
 		Event event;
@@ -119,9 +124,10 @@ int main() {
 					figures.push_back(&figure);
 					active = nullptr;
 
-					FigurePrototype prototype(&figure);
-					copy = *prototype.cloneComposite();
-					figures.push_back(&copy);
+					//FigurePrototype prototype(&figure);
+					//copy = *prototype.cloneComposite();
+					//copy = *prototype.cloneCompositeFromRepository();
+					//figures.push_back(&copy);
 				}
 				handleKeyPress(event.key.code, *active, window);			
 			}			
@@ -129,9 +135,11 @@ int main() {
 		sleep(milliseconds(100));
 		window.clear();
 		figure.draw(window);
-		copy.draw(window);
+		//copy.draw(window);
 		figure1->draw(window);
 		figure2->draw(window);
+		//figure3->draw(window);
+		//figure4->draw(window);
 		window.display();
 	}
 
