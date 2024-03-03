@@ -3,7 +3,10 @@
 #include "Figure.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <fstream>
+#include <iostream>
 using namespace sf;
+using namespace std;
 class Square : public Figure
 {
 private:
@@ -23,6 +26,25 @@ public:
     bool getTrailMovement() override {
         return trailMovement;
     }
+    std::ostream& save(std::ostream& os) const override {
+        os << "S" << " " << this->position.x << " " << this->position.y << " " << this->color.toInteger() << " " << this->side << endl;
+        return os;
+    }
+
+    std::istream& load(std::istream& is) override {
+        char type;
+        int x, y, side;
+        long long color;
+        is >> type >> x >> y >> color >> side;
+        this->position.x = x;
+        this->position.y = y;
+        this->color = Color(color);
+        this->square.setFillColor(Color(color));
+        this->side = side;
+        this->square.setSize(Vector2f(side, side));
+        return is;
+    }
+
     void restore() override {
         square.setFillColor(startColor);
         color = startColor;

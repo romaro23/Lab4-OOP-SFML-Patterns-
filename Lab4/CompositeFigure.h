@@ -18,6 +18,19 @@ public:
 	~CompositeFigure() {
 		compositeFigure.clear();
 	}
+	std::ostream& save(std::ostream& os) const override {
+		for (auto figure : compositeFigure) {
+			figure->save(os);
+		}
+		return os;
+	}
+
+	std::istream& load(std::istream& is) override {
+		for (auto figure : compositeFigure) {
+			figure->load(is);
+		}
+		return is;
+	}
 	bool isBelongs(Figure* figure) {
 		if (count(compositeFigure.begin(), compositeFigure.end(), figure)) {
 			return true;

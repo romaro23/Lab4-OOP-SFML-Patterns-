@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 using namespace sf;
+using namespace std;
 class Circle : public Figure
 {
 private:
@@ -22,6 +23,24 @@ public:
     }
     bool getTrailMovement() {
         return trailMovement;
+    }
+    std::ostream& save(std::ostream& os) const override {
+        os << "C" << " " << this->position.x << " " << this->position.y << " " << this->color.toInteger() << " " << this->radius << endl;
+        return os;
+    }
+
+    std::istream& load(std::istream& is) override {
+        char type;
+        int x, y, radius;
+        long long color;
+        is >> type >> x >> y >> color >> radius;
+        this->position.x = x;
+        this->position.y = y;
+        this->color = Color(color);
+        this->circle.setFillColor(Color(color));
+        this->radius = radius;
+        this->circle.setRadius(radius);
+        return is;
     }
     void restore() override {
         circle.setFillColor(startColor);

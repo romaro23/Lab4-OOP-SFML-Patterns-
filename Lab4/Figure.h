@@ -1,12 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "MyColor.h"
+#include <fstream>
 using namespace sf;
 class Figure
 {
 public:
 	Color color;
 	bool trailMovement;
+	virtual std::ostream& save(std::ostream& os) const = 0;
+	virtual std::istream& load(std::istream& is) = 0;
 	virtual void setTrailMovement(bool move) = 0;
 	virtual bool getTrailMovement() = 0;
 	virtual void restore() = 0;

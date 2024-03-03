@@ -5,12 +5,14 @@
 #include "WindowWrapper.h"
 #include "FigurePrototype.h"
 #include "MyColor.h"
+#include "Caretaker.h"
 #include <vector>
 #include <iostream>
 #include <algorithm>
 using namespace sf;
 using namespace std;
-
+Caretaker caretaker;
+CompositeFigure figure;
 void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 	switch (key) {
 	case Keyboard::Key::Up:
@@ -42,7 +44,14 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 		cout << "S" << endl;
 		break;
 	case Keyboard::Key::R:
-		myFigure.restore();
+		figure.decompose();
+		caretaker.loadState();
+		figure.combine(WindowWrapper::figures[2]);
+		window.clear();
+		for (auto figure : WindowWrapper::figures) {
+			figure->draw(window);
+		}
+		window.display();
 		cout << "R" << endl;
 		break;
 	case Keyboard::Key::C:
@@ -78,8 +87,7 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 int main() {
 	cout << "R - restore, C - color, S - show, H - hide, Enter - start auto move, RShift - stop, arrows - move" << endl;
 	RenderWindow& window = WindowWrapper::getWindow();
-	CompositeFigure figure;
-	CompositeFigure copy;
+	/*CompositeFigure copy;*/
 	vector<Figure*> figures;
 	Figure* figure1 = new Square(100.0f, Color::Green);
 	/*FigurePrototype copy1(figure1);
@@ -92,9 +100,12 @@ int main() {
 	figure.move(100.0f, 100.0f, window);
 	figures.push_back(figure1);
 	figures.push_back(figure2);
+	figures.push_back(&figure);
 	//figures.push_back(figure3);
 	//figures.push_back(figure4);
 	Figure* active = nullptr;
+	WindowWrapper::figures = figures;
+	caretaker.saveState();
 	while (window.isOpen()) {		
 		Event event;
 		while (window.pollEvent(event)) {			
@@ -121,9 +132,10 @@ int main() {
 					figure.combine(active);
 					auto it = find(figures.begin(), figures.end(), active);
 					figures.erase(it);
+					//WindowWrapper::figures.erase(it);
 					figures.push_back(&figure);
+					WindowWrapper::figures = figures;
 					active = nullptr;
-
 					//FigurePrototype prototype(&figure);
 					//copy = *prototype.cloneComposite();
 					//copy = *prototype.cloneCompositeFromRepository();
@@ -134,12 +146,10 @@ int main() {
 		}
 		sleep(milliseconds(100));
 		window.clear();
-		figure.draw(window);
-		//copy.draw(window);
-		figure1->draw(window);
-		figure2->draw(window);
-		//figure3->draw(window);
-		//figure4->draw(window);
+		figures = WindowWrapper::figures;
+		for (auto figure : WindowWrapper::figures) {
+			figure->draw(window);
+		}
 		window.display();
 	}
 

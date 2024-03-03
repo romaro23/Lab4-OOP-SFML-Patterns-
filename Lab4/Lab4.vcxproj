@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Caretaker.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CompositeFigure.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FigurePrototype.cpp" />
     <ClCompile Include="Lab4.cpp" />
+    <ClCompile Include="Memento.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="WindowWrapper.cpp" />
   </ItemGroup>
@@ -139,10 +141,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Caretaker.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CompositeFigure.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FigurePrototype.h" />
+    <ClInclude Include="Memento.h" />
     <ClInclude Include="MyColor.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="WindowWrapper.h" />

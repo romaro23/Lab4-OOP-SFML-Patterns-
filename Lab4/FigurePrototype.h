@@ -6,9 +6,9 @@ class FigurePrototype
 {
 private:
 	Figure* figurePrototype;
+	CompositeFigure* compositePrototype;
 	vector<Figure*> prototypes;
 	vector<CompositeFigure*> compositePrototypes;
-	CompositeFigure* compositePrototype;
 public:
 	FigurePrototype(Figure* originalFigure) {
 		figurePrototype = originalFigure;
@@ -31,7 +31,7 @@ public:
 			return temp;
 		}
 		else {
-			std::cout << "The repository is empy!" << std::endl;
+			std::cout << "The repository is empty!" << std::endl;
 		}
 		
 	}
@@ -42,7 +42,7 @@ public:
 			return temp;
 		}
 		else {
-			std::cout << "The repository is empy!" << std::endl;
+			std::cout << "The repository is empty!" << std::endl;
 		}
 		
 	}
