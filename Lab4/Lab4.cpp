@@ -13,6 +13,7 @@ using namespace sf;
 using namespace std;
 Caretaker caretaker;
 CompositeFigure figure;
+vector<Figure*> figures;
 void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 	switch (key) {
 	case Keyboard::Key::Up:
@@ -82,27 +83,24 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 		}
 		myFigure.setColor(color);
 		break;
+	case Keyboard::Key::P:
+		FigurePrototype prototype(&myFigure);
+		Figure* figure3 = prototype.cloneFromRepository();
+		figures.push_back(figure3);
+		WindowWrapper::figures = figures;
+		break;
 	}
 }
 int main() {
 	cout << "R - restore, C - color, S - show, H - hide, Enter - start auto move, RShift - stop, arrows - move" << endl;
 	RenderWindow& window = WindowWrapper::getWindow();
-	/*CompositeFigure copy;*/
-	vector<Figure*> figures;
 	Figure* figure1 = new Square(100.0f, Color::Green);
-	/*FigurePrototype copy1(figure1);
-	Figure* figure3 = copy1.cloneFromRepository();
-	Figure* figure4 = copy1.cloneFromRepository();
-	delete figure1;*/
 	Figure* figure2 = new Circle(50.0f, Color::Blue);
-	figure1->setTrailMovement(true);
 	figure.combine(new Square(120.0f, Color::Yellow));	
 	figure.move(100.0f, 100.0f, window);
 	figures.push_back(figure1);
 	figures.push_back(figure2);
 	figures.push_back(&figure);
-	//figures.push_back(figure3);
-	//figures.push_back(figure4);
 	Figure* active = nullptr;
 	WindowWrapper::figures = figures;
 	caretaker.saveState();
@@ -132,14 +130,9 @@ int main() {
 					figure.combine(active);
 					auto it = find(figures.begin(), figures.end(), active);
 					figures.erase(it);
-					//WindowWrapper::figures.erase(it);
 					figures.push_back(&figure);
 					WindowWrapper::figures = figures;
 					active = nullptr;
-					//FigurePrototype prototype(&figure);
-					//copy = *prototype.cloneComposite();
-					//copy = *prototype.cloneCompositeFromRepository();
-					//figures.push_back(&copy);
 				}
 				handleKeyPress(event.key.code, *active, window);			
 			}			
