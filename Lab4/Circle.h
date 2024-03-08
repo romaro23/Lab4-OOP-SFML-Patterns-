@@ -50,7 +50,10 @@ public:
         circle.setScale(Vector2f(0.9f, 0.9f));
     }
     Figure* clone() override {
-        return new Circle(this->radius, this->color);
+        Circle* circle = new Circle(this->radius, this->color);
+        circle->position = this->circle.getPosition();
+        circle->circle.setPosition(this->circle.getPosition());
+        return circle;
     }
     void move(float x, float y, RenderWindow& window) override;
 

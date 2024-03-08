@@ -53,7 +53,10 @@ public:
         square.setScale(Vector2f(1.2f, 1.2f));
     }
     Figure* clone() override {
-        return new Square(this->side, this->color);
+        Square* square = new Square(this->side, this->color);
+        square->position = this->square.getPosition();
+        square->square.setPosition(this->square.getPosition());
+        return square;
     }
     void move(float x, float y, RenderWindow& window) override;
 

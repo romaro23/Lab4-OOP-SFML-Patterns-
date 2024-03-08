@@ -8,9 +8,8 @@ using namespace sf;
 using namespace std;
 class CompositeFigure: public Figure
 {
-private:
-	vector<Figure*> compositeFigure;
 public:
+	vector<Figure*> compositeFigure;
 	CompositeFigure(vector<Figure*> composite) {
 		compositeFigure = composite;
 	}
@@ -47,10 +46,17 @@ public:
 			compositeFigure.push_back(figure);
 		}	
 	}
-	void draw(RenderWindow& window) {
-		for (auto figure : compositeFigure) {
-			figure->draw(window);
+	void combine(CompositeFigure figure) {
+		if (!isBelongs(&figure)) {
+			compositeFigure.push_back(&figure);
 		}
+	}
+	void draw(RenderWindow& window) {
+		if (!compositeFigure.empty()) {
+			for (auto figure : compositeFigure) {
+				figure->draw(window);
+			}
+		}	
 	}
 	void move(float x, float y, RenderWindow& window) {
 		for (auto figure : compositeFigure) {
@@ -68,9 +74,15 @@ public:
 		}
 	}
 	FloatRect getGlobalBounds() {
-		for (auto figure : compositeFigure) {
-			return figure->getGlobalBounds();
+		FloatRect bounds = compositeFigure[0]->getGlobalBounds();
+		for (size_t i = 1; i < compositeFigure.size(); ++i) {
+			const FloatRect& figureBounds = compositeFigure[i]->getGlobalBounds();
+			bounds.left = std::min(bounds.left, figureBounds.left);
+			bounds.top = std::min(bounds.top, figureBounds.top);
+			bounds.width = std::max(bounds.left + bounds.width, figureBounds.left + figureBounds.width) - bounds.left;
+			bounds.height = std::max(bounds.top + bounds.height, figureBounds.top + figureBounds.height) - bounds.top;
 		}
+		return bounds;
 		
 	}
 	void autoMove(RenderWindow& window) {

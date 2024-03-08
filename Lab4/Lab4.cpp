@@ -12,8 +12,8 @@
 using namespace sf;
 using namespace std;
 Caretaker caretaker;
-CompositeFigure figure;
 vector<Figure*> figures;
+CompositeFigure* activeComposite = nullptr;
 void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 	switch (key) {
 	case Keyboard::Key::Up:
@@ -32,19 +32,7 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 		myFigure.move(-30.0f, 0.0f, window);
 		cout << "Left" << endl;
 		break;
-	case Keyboard::Key::Enter:
-		cout << "Enter" << endl;
-		myFigure.autoMove(window);
-		break;
-	case Keyboard::Key::H:
-		myFigure.hide();
-		cout << "H" << endl;
-		break;
-	case Keyboard::Key::S:
-		myFigure.show();
-		cout << "S" << endl;
-		break;
-	case Keyboard::Key::R:
+	/*case Keyboard::Key::R:
 		figure.decompose();
 		caretaker.loadState();
 		figure.combine(WindowWrapper::figures[2]);
@@ -54,56 +42,75 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 		}
 		window.display();
 		cout << "R" << endl;
+		break;*/
+	case Keyboard::Key::S:
+		caretaker.saveState();
+		break;
+	case Keyboard::Key::Num1:
+	{
+		cout << "Add to and old or create a new composite? old/new" << endl;
+		string answer;
+		cin >> answer;		
+		static CompositeFigure oldComposite;
+		if (answer == "old") {
+			if (activeComposite == nullptr) {
+				activeComposite = &oldComposite;
+			}
+			auto it = find(figures.begin(), figures.end(), &myFigure);
+			figures.erase(it);
+			activeComposite->combine(&myFigure);
+			//Change myFigure to activeComposite
+			it = find(figures.begin(), figures.end(), &myFigure);
+			if (it == figures.end()) {
+				figures.push_back(activeComposite);
+			}		
+		}
+		else if (answer == "new") {
+			auto it = find(figures.begin(), figures.end(), &myFigure);
+			figures.erase(it);
+			static CompositeFigure newComposite;
+			activeComposite = &newComposite;
+			activeComposite->combine(&myFigure);
+			it = find(figures.begin(), figures.end(), &myFigure);
+			if (it != figures.end()) {
+				figures.push_back(activeComposite);
+			}
+			
+		}	
+		WindowWrapper::figures = figures;
+	}	
 		break;
 	case Keyboard::Key::C:
-		MyColor color;
-		cout << "Choose color" << endl;
-		cout << "1. Red" << endl;
-		cout << "2. Blue" << endl;
-		cout << "3. Green" << endl;
-		cout << "4. Yellow" << endl;
-		int option;
-		cin >> option;
-		switch (option) {
-		case 1:
-			color = MyColor::Red;
-			break;
-		case 2:
-			color = MyColor::Blue;
-			break;
-		case 3:
-			color = MyColor::Green;
-			break;
-		case 4:
-			color = MyColor::Yellow;
-			break;
-		default:
-			color = MyColor::White;
-			break;
-		}
-		myFigure.setColor(color);
+	{
+		FigurePrototype prototype;
+		prototype.createCompositePrototype(*dynamic_cast<CompositeFigure*>(&myFigure));
+		CompositeFigure* figure = prototype.cloneComposite();
+		figures.push_back(figure);
+		WindowWrapper::figures = figures;
+	}	
 		break;
 	case Keyboard::Key::P:
-		FigurePrototype prototype(&myFigure);
-		Figure* figure3 = prototype.cloneFromRepository();
-		figures.push_back(figure3);
+	{
+		FigurePrototype prototype;
+		prototype.createPrototype(&myFigure);
+		Figure* figure = prototype.clone();
+		figures.push_back(figure);
 		WindowWrapper::figures = figures;
+	}	
 		break;
 	}
 }
 int main() {
-	cout << "R - restore, C - color, S - show, H - hide, Enter - start auto move, RShift - stop, arrows - move" << endl;
+	cout << "R - restore, C - clone composite, S - save state, P - clone figure, arrows - move, Num1 - create composite" << endl;
 	RenderWindow& window = WindowWrapper::getWindow();
 	Figure* figure1 = new Square(100.0f, Color::Green);
 	Figure* figure2 = new Circle(50.0f, Color::Blue);
-	figure.combine(new Square(120.0f, Color::Yellow));	
-	figure.move(100.0f, 100.0f, window);
+
 	figures.push_back(figure1);
 	figures.push_back(figure2);
-	figures.push_back(&figure);
+
 	Figure* active = nullptr;
 	WindowWrapper::figures = figures;
-	caretaker.saveState();
 	while (window.isOpen()) {		
 		Event event;
 		while (window.pollEvent(event)) {			
@@ -125,16 +132,7 @@ int main() {
 				}
 			}
 			else if (event.type == Event::KeyPressed && active != nullptr) {
-				if (event.key.code == Keyboard::Key::LShift) {
-					active->move(figure.getPosition().x, figure.getPosition().y, window);
-					figure.combine(active);
-					auto it = find(figures.begin(), figures.end(), active);
-					figures.erase(it);
-					figures.push_back(&figure);
-					WindowWrapper::figures = figures;
-					active = nullptr;
-				}
-				handleKeyPress(event.key.code, *active, window);			
+				handleKeyPress(event.key.code, *active, window);
 			}			
 		}
 		sleep(milliseconds(100));

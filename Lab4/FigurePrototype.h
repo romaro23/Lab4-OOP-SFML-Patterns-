@@ -10,12 +10,12 @@ private:
 	vector<Figure*> prototypes;
 	vector<CompositeFigure*> compositePrototypes;
 public:
-	FigurePrototype(Figure* originalFigure) {
+	void createPrototype(Figure* originalFigure) {
 		figurePrototype = originalFigure;
 		prototypes.push_back(figurePrototype);
 	}
-	FigurePrototype(CompositeFigure* originalFigure) {
-		compositePrototype = new CompositeFigure(originalFigure->cloneComposite());
+	void createCompositePrototype(CompositeFigure originalFigure) {
+		compositePrototype = new CompositeFigure(originalFigure.cloneComposite());
 		compositePrototypes.push_back(compositePrototype);
 	}
 	Figure* clone() const {
