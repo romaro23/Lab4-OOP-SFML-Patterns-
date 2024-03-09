@@ -18,9 +18,11 @@ public:
 		compositeFigure.clear();
 	}
 	std::ostream& save(std::ostream& os) const override {
+		os << '{' << endl;
 		for (auto figure : compositeFigure) {
 			figure->save(os);
 		}
+		os << '}' << endl;
 		return os;
 	}
 
@@ -137,7 +139,11 @@ public:
 		return copy;
 	}
 	Figure* clone() {
-		return compositeFigure[0];
+		vector<Figure*> copy;
+		for (auto figure : compositeFigure) {
+			copy.push_back(figure->clone());
+		}
+		return new CompositeFigure(copy);
 	}
 };
 

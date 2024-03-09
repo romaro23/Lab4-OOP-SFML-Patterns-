@@ -18,31 +18,25 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 	switch (key) {
 	case Keyboard::Key::Up:
 		myFigure.move(0.0f, -30.0f, window);
-		cout << "Up" << endl;
 		break;
 	case Keyboard::Key::Down:
 		myFigure.move(0.0f, 30.0f, window);
-		cout << "Down" << endl;
 		break;
 	case Keyboard::Key::Right:
 		myFigure.move(30.0f, 0.0f, window);
-		cout << "Right" << endl;
 		break;
 	case Keyboard::Key::Left:
 		myFigure.move(-30.0f, 0.0f, window);
-		cout << "Left" << endl;
 		break;
-	/*case Keyboard::Key::R:
-		figure.decompose();
+	case Keyboard::Key::R:
 		caretaker.loadState();
-		figure.combine(WindowWrapper::figures[2]);
 		window.clear();
 		for (auto figure : WindowWrapper::figures) {
 			figure->draw(window);
 		}
 		window.display();
-		cout << "R" << endl;
-		break;*/
+		cout << "Loaded" << endl;
+		break;
 	case Keyboard::Key::S:
 		caretaker.saveState();
 		break;
@@ -59,8 +53,7 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 			auto it = find(figures.begin(), figures.end(), &myFigure);
 			figures.erase(it);
 			activeComposite->combine(&myFigure);
-			//Change myFigure to activeComposite
-			it = find(figures.begin(), figures.end(), &myFigure);
+			it = find(figures.begin(), figures.end(), activeComposite);
 			if (it == figures.end()) {
 				figures.push_back(activeComposite);
 			}		
@@ -71,12 +64,14 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 			static CompositeFigure newComposite;
 			activeComposite = &newComposite;
 			activeComposite->combine(&myFigure);
-			it = find(figures.begin(), figures.end(), &myFigure);
-			if (it != figures.end()) {
+			it = find(figures.begin(), figures.end(), activeComposite);
+			if (it == figures.end()) {
 				figures.push_back(activeComposite);
 			}
-			
-		}	
+		}
+		else {
+			cout << "Wrond answer. Try again" << endl;
+		}
 		WindowWrapper::figures = figures;
 	}	
 		break;
@@ -101,8 +96,11 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 	}
 }
 int main() {
-	cout << "R - restore, C - clone composite, S - save state, P - clone figure, arrows - move, Num1 - create composite" << endl;
+	cout << "C - clone composite, S - save state, R - load state, P - clone figure, arrows - move, Num1 - create composite" << endl;
 	RenderWindow& window = WindowWrapper::getWindow();
+	RenderWindow& windowCopy = WindowWrapper::getWindow();
+	cout << &window << endl;
+	cout << &windowCopy << endl;
 	Figure* figure1 = new Square(100.0f, Color::Green);
 	Figure* figure2 = new Circle(50.0f, Color::Blue);
 

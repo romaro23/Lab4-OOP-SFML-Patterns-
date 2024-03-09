@@ -36,6 +36,7 @@ public:
         is >> type >> x >> y >> color >> radius;
         this->position.x = x;
         this->position.y = y;
+        this->circle.setPosition(x, y);
         this->color = Color(color);
         this->circle.setFillColor(Color(color));
         this->radius = radius;

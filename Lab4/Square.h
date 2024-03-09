@@ -36,8 +36,9 @@ public:
         int x, y, side;
         long long color;
         is >> type >> x >> y >> color >> side;
-        this->position.x = x;
+        this->position.x = x; 
         this->position.y = y;
+        this->square.setPosition(x, y);
         this->color = Color(color);
         this->square.setFillColor(Color(color));
         this->side = side;
