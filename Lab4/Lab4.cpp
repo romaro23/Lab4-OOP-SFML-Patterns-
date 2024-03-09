@@ -77,20 +77,44 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 		break;
 	case Keyboard::Key::C:
 	{
-		FigurePrototype prototype;
-		prototype.createCompositePrototype(*dynamic_cast<CompositeFigure*>(&myFigure));
-		CompositeFigure* figure = prototype.cloneComposite();
-		figures.push_back(figure);
-		WindowWrapper::figures = figures;
+		static FigurePrototype prototype;	
+		prototype.repositoryState();
+		cout << "From a repository or active figure? rep/act" << endl;
+		string answer;
+		cin >> answer;
+		CompositeFigure* figure = nullptr;
+		if (answer == "rep") {
+			figure = prototype.cloneCompositeFromRepository();
+		}
+		else if (answer == "act") {
+			prototype.createCompositePrototype(*dynamic_cast<CompositeFigure*>(&myFigure));
+			figure = prototype.cloneComposite();
+		}
+		if (figure != nullptr) {
+			figures.push_back(figure);
+			WindowWrapper::figures = figures;
+		}
 	}	
 		break;
 	case Keyboard::Key::P:
 	{
-		FigurePrototype prototype;
-		prototype.createPrototype(&myFigure);
-		Figure* figure = prototype.clone();
-		figures.push_back(figure);
-		WindowWrapper::figures = figures;
+		static FigurePrototype prototype;	
+		prototype.repositoryState();
+		cout << "From a repository or active figure? rep/act" << endl;
+		string answer;
+		cin >> answer;
+		Figure* figure = nullptr;
+		if (answer == "rep") {
+			figure = prototype.cloneFromRepository();
+		}
+		else if (answer == "act") {
+			prototype.createPrototype(&myFigure);
+			figure = prototype.clone();
+		}
+		if (figure != nullptr) {
+			figures.push_back(figure);
+			WindowWrapper::figures = figures;
+		}		
 	}	
 		break;
 	}

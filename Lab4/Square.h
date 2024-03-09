@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -45,7 +46,11 @@ public:
         this->square.setSize(Vector2f(side, side));
         return is;
     }
-
+    string toString() {
+        stringstream ss;
+        ss << "Square " << "R: " << static_cast<int>(this->color.r) << " G: " << static_cast<int>(this->color.g) << " B: " << static_cast<int>(this->color.b) << " ";
+        return ss.str();
+    }
     void restore() override {
         square.setFillColor(startColor);
         color = startColor;

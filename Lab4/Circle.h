@@ -3,6 +3,7 @@
 #include "Figure.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <sstream>
 using namespace sf;
 using namespace std;
 class Circle : public Figure
@@ -42,6 +43,11 @@ public:
         this->radius = radius;
         this->circle.setRadius(radius);
         return is;
+    }
+    string toString() {
+        stringstream ss;
+        ss << "Circle " << "R: " << static_cast<int>(this->color.r) << " G: " << static_cast<int>(this->color.g) << " B: " << static_cast<int>(this->color.b) << " ";
+        return ss.str();
     }
     void restore() override {
         circle.setFillColor(startColor);

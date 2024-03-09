@@ -2,7 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include "MyColor.h"
 #include <fstream>
+#include <iostream>
 using namespace sf;
+using namespace std;
 class Figure
 {
 public:
@@ -26,5 +28,6 @@ public:
 	virtual void setOutline(float thickness, Color color) = 0;
 	virtual void setColor(MyColor color) = 0;
 	virtual Figure* clone() = 0;
+	virtual string toString() = 0;
 };
 

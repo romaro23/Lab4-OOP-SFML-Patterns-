@@ -16,13 +16,23 @@ public:
 	}
 	void createCompositePrototype(CompositeFigure originalFigure) {
 		compositePrototype = new CompositeFigure(originalFigure.cloneComposite());
-		compositePrototypes.push_back(compositePrototype);
+		compositePrototypes.push_back(new CompositeFigure(originalFigure.cloneComposite()));
 	}
 	Figure* clone() const {
 		return figurePrototype->clone();
 	}
 	CompositeFigure* cloneComposite() const {
 		return compositePrototype;
+	}
+	void repositoryState() {
+		cout << "Figures repository: " << endl;
+		for (auto figure : prototypes) {
+			cout << figure->toString();
+		}
+		cout << "Composite repository: " << endl;
+		for (auto figure : compositePrototypes) {
+			cout << figure->toString();
+		}
 	}
 	Figure* cloneFromRepository() {
 		if (!prototypes.empty()) {
@@ -31,7 +41,8 @@ public:
 			return temp;
 		}
 		else {
-			std::cout << "The repository is empty!" << std::endl;
+			cout << "The repository is empty!" << endl;
+			return nullptr;
 		}
 		
 	}
@@ -42,7 +53,8 @@ public:
 			return temp;
 		}
 		else {
-			std::cout << "The repository is empty!" << std::endl;
+			cout << "The repository is empty!" << endl;
+			return nullptr;
 		}
 		
 	}

@@ -4,6 +4,7 @@
 #include <vector>
 #include "MyColor.h"
 #include <algorithm>
+#include <sstream>
 using namespace sf;
 using namespace std;
 class CompositeFigure: public Figure
@@ -31,6 +32,15 @@ public:
 			figure->load(is);
 		}
 		return is;
+	}
+	string toString() {
+		stringstream ss;
+		ss << "Composite { ";
+		for (auto figure : compositeFigure) {
+			ss << figure->toString();
+		}
+		ss << " } ";
+		return ss.str();
 	}
 	bool isBelongs(Figure* figure) {
 		if (count(compositeFigure.begin(), compositeFigure.end(), figure)) {
