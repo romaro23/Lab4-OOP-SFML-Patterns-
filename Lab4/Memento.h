@@ -43,25 +43,9 @@ class Memento
 				break;
 			case '{':
 				CompositeFigure * tempComposite = new CompositeFigure();
-				while (getline(input, line)) {
-					if (line[0] == '}') {
-						break;
-					}
-					char compositeFigureType = line[0];
-					istringstream iss(line);
-					Figure* compositeTempFigure = nullptr;
-					switch (compositeFigureType) {
-					case 'S':
-						compositeTempFigure = new Square(0.0f, Color::White);
-						break;
-					case 'C':
-						compositeTempFigure = new Circle(0.0f, Color::White);
-						break;
-					}
-					compositeTempFigure->load(iss);
-					tempComposite->combine(compositeTempFigure);
-				}
+				loadComposite(input, tempComposite);
 				figures.push_back(tempComposite);
+				break;
 			}
 			if (tempFigure != nullptr) {
 				tempFigure->load(iss);
@@ -69,6 +53,34 @@ class Memento
 			}		
 		}
 		input.close();
+	}
+	void loadComposite(ifstream& input, CompositeFigure* composite) {
+		string line;
+		while (getline(input, line)) {
+			if (line[0] == '}') {
+				break;
+			}
+			char compositeFigureType = line[0];
+			istringstream iss(line);
+			Figure* compositeTempFigure = nullptr;
+			switch (compositeFigureType) {
+			case 'S':
+				compositeTempFigure = new Square(0.0f, Color::White);
+				break;
+			case 'C':
+				compositeTempFigure = new Circle(0.0f, Color::White);
+				break;
+			case '{':
+				CompositeFigure* tempNestedComposite = new CompositeFigure();
+				loadComposite(input, tempNestedComposite);
+				composite->combine(tempNestedComposite);
+				continue;
+			}
+			if (compositeTempFigure != nullptr) {
+				compositeTempFigure->load(iss);
+				composite->combine(compositeTempFigure);
+			}
+		}
 	}
 };
 
