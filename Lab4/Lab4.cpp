@@ -35,7 +35,6 @@ void handleKeyPress(Keyboard::Key key, Figure& myFigure, RenderWindow& window) {
 			figure->draw(window);
 		}
 		window.display();
-		cout << "Loaded" << endl;
 		break;
 	case Keyboard::Key::S:
 		caretaker.saveState();
@@ -153,8 +152,61 @@ int main() {
 					
 				}
 			}
-			else if (event.type == Event::KeyPressed && active != nullptr) {
-				handleKeyPress(event.key.code, *active, window);
+			else if (event.type == Event::KeyPressed) {
+					if (event.key.code == Keyboard::Key::Enter) {
+					cout << "What figure you want to add? circle/square" << endl;
+					string answer;
+					cin >> answer;
+					cout << "What color? 1 - red 2 - green 3 - blue" << endl;
+					int colorAnswer;
+					cin >> colorAnswer;
+					Color color;
+					if (answer == "circle") {
+						switch (colorAnswer) {
+						case 1:
+							color = Color::Red;
+							break;
+						case 2:
+							color = Color::Green;
+							break;
+						case 3:
+							color = Color::Blue;
+							break;
+						default:
+							color = Color::White;
+							break;
+						}
+						figures.push_back(new Circle(50.0f, color));
+						WindowWrapper::figures = figures;
+					}
+					else if (answer == "square") {
+						switch (colorAnswer) {
+						case 1:
+							color = Color::Red;
+							break;
+						case 2:
+							color = Color::Green;
+							break;
+						case 3:
+							color = Color::Blue;
+							break;
+						default:
+							color = Color::White;
+							break;
+						}
+						figures.push_back(new Square(100.0f, color));
+						WindowWrapper::figures = figures;
+					}
+					else {
+						cout << "Wrong answer. Try again" << endl;
+					}
+				}
+				if (active != nullptr) {
+					handleKeyPress(event.key.code, *active, window);
+				}		
+				if (event.key.code == Keyboard::Key::Num1) {
+					active = nullptr;
+				}
 			}			
 		}
 		sleep(milliseconds(100));

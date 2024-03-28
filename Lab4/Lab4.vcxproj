@@ -132,6 +132,7 @@
     <ClCompile Include="CompositeFigure.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FigurePrototype.cpp" />
+    <ClCompile Include="Iterator.cpp" />
     <ClCompile Include="Lab4.cpp" />
     <ClCompile Include="Memento.cpp" />
     <ClCompile Include="Square.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="CompositeFigure.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FigurePrototype.h" />
+    <ClInclude Include="Iterator.h" />
     <ClInclude Include="Memento.h" />
     <ClInclude Include="MyColor.h" />
     <ClInclude Include="Square.h" />
