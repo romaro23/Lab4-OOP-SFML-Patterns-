@@ -23,7 +23,7 @@ public:
 	Iterator<Figure*>* createIterator() {
 		return new Iterator<Figure*>(compositeFigure);
 	}
-	std::ostream& save(std::ostream& os) const override {
+	ostream& save(std::ostream& os) const override {
 		os << '{' << endl;
 		for (auto figure : compositeFigure) {
 			figure->save(os);
@@ -32,7 +32,7 @@ public:
 		return os;
 	}
 
-	std::istream& load(std::istream& is) override {
+	istream& load(std::istream& is) override {
 		/*for (auto figure : compositeFigure) {
 			figure->load(is);
 		}*/
@@ -48,6 +48,10 @@ public:
 		/*for (auto figure : compositeFigure) {
 			ss << figure->toString();
 		}*/
+		Iterator<Figure*>* it = createIterator();
+		for (it->first(); !it->isDone(); it->next()) {
+			ss << it->current()->toString();
+		}
 		ss << " } ";
 		return ss.str();
 	}
