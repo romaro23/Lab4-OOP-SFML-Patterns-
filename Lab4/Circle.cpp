@@ -45,6 +45,11 @@ void Circle::move(float x, float y, RenderWindow& window) {
         
     }
 }
+void Circle::setPosition(float x, float y) {
+    Vector2f movement(x, y);
+    position += movement;
+    circle.setPosition(position);
+}
 void Circle::draw(RenderWindow& window) {
     window.draw(circle);
 }

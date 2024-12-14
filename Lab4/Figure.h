@@ -10,10 +10,14 @@ class Figure
 public:
 	Color color;
 	bool trailMovement;
+	bool isTarget;
+	bool haveTarget;
+	Figure* target = nullptr;
 	virtual std::ostream& save(std::ostream& os) const = 0;
 	virtual std::istream& load(std::istream& is) = 0;
 	virtual void setTrailMovement(bool move) = 0;
 	virtual bool getTrailMovement() = 0;
+	virtual void setPosition(float x, float y) = 0;
 	virtual void restore() = 0;
 	virtual FloatRect getGlobalBounds() = 0;
 	virtual void setScale(float x, float y) = 0;

@@ -25,6 +25,7 @@ public:
     bool getTrailMovement() {
         return trailMovement;
     }
+    void setPosition(float x, float y) override;
     std::ostream& save(std::ostream& os) const override {
         os << "C" << " " << this->position.x << " " << this->position.y << " " << this->color.toInteger() << " " << this->radius << endl;
         return os;

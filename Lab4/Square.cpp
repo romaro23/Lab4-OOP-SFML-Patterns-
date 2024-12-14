@@ -43,6 +43,11 @@ void Square::move(float x, float y, RenderWindow& window) {
     }
     
 }
+void Square::setPosition(float x, float y) {
+    Vector2f movement(x, y);
+    position += movement;
+    square.setPosition(position);
+}
 FloatRect Square::getGlobalBounds() {
     return square.getGlobalBounds();
 }

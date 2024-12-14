@@ -20,6 +20,12 @@ public:
 	~CompositeFigure() {
 		compositeFigure.clear();
 	}
+	void setPosition(float x, float y) override {
+		Iterator<Figure*>* it = createIterator();
+		for (it->first(); !it->isDone(); it->next()) {
+			it->current()->setPosition(x, y);
+		}
+	}
 	Iterator<Figure*>* createIterator() {
 		return new Iterator<Figure*>(compositeFigure);
 	}
@@ -33,9 +39,6 @@ public:
 	}
 
 	istream& load(std::istream& is) override {
-		/*for (auto figure : compositeFigure) {
-			figure->load(is);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->load(is);
@@ -45,9 +48,6 @@ public:
 	string toString() {
 		stringstream ss;
 		ss << "Composite { ";
-		/*for (auto figure : compositeFigure) {
-			ss << figure->toString();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			ss << it->current()->toString();
@@ -78,9 +78,6 @@ public:
 	}
 	void draw(RenderWindow& window) {
 		if (!compositeFigure.empty()) {
-			/*for (auto figure : compositeFigure) {
-				figure->draw(window);
-			}*/
 			Iterator<Figure*>* it = createIterator();
 			for (it->first(); !it->isDone(); it->next()) {
 				it->current()->draw(window);
@@ -88,27 +85,18 @@ public:
 		}	
 	}
 	void move(float x, float y, RenderWindow& window) {
-		/*for (auto figure : compositeFigure) {
-			figure->move(x, y, window);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->move(x, y, window);
 		}
 	}
 	void show() {
-		/*for (auto figure : compositeFigure) {
-			figure->show();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->show();
 		}
 	}
 	void hide() {
-		/*for (auto figure : compositeFigure) {
-			figure->hide();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->hide();
@@ -127,45 +115,30 @@ public:
 		
 	}
 	void autoMove(RenderWindow& window) {
-		/*for (auto figure : compositeFigure) {
-			figure->autoMove(window);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->autoMove(window);
 		}
 	}
 	void setColor(MyColor color) {
-		/*for (auto figure : compositeFigure) {
-			figure->setColor(color);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->setColor(color);
 		}
 	}
 	void setTrailMovement(bool move) {
-		/*for (auto figure : compositeFigure) {
-			figure->setTrailMovement(move);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->setTrailMovement(move);
 		}
 	}
 	bool getTrailMovement() {
-		/*for (auto figure : compositeFigure) {
-			return figure->getTrailMovement();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			return it->current()->getTrailMovement();
 		}
 	}
 	void restore() {
-		/*for (auto figure : compositeFigure) {
-			figure->restore();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->restore();
@@ -173,18 +146,12 @@ public:
 		decompose();
 	}
 	void setScale(float x, float y) {
-		/*for (auto figure : compositeFigure) {
-			figure->setScale(x, y);
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			it->current()->setScale(x, y);
 		}
 	}
 	Vector2f getPosition() {
-		/*for (auto figure : compositeFigure) {
-			return figure->getPosition();
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			return it->current()->getPosition();
@@ -200,9 +167,6 @@ public:
 	}
 	vector<Figure*> cloneComposite() {
 		vector<Figure*> copy;
-		/*for (auto figure : compositeFigure) {
-			copy.push_back(figure->clone());
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			copy.push_back(it->current()->clone());
@@ -211,9 +175,6 @@ public:
 	}
 	Figure* clone() {
 		vector<Figure*> copy;
-		/*for (auto figure : compositeFigure) {
-			copy.push_back(figure->clone());
-		}*/
 		Iterator<Figure*>* it = createIterator();
 		for (it->first(); !it->isDone(); it->next()) {
 			copy.push_back(it->current()->clone());

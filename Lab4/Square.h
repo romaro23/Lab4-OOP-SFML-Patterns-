@@ -17,7 +17,7 @@ private:
     RectangleShape square;
     Vector2f position;
     Vector2f startPosition;
-    std::vector<Vector2f> movementHistory;
+    vector<Vector2f> movementHistory;
 public:
     Square(float side, Color color);
     FloatRect getGlobalBounds() override;
@@ -27,6 +27,7 @@ public:
     bool getTrailMovement() override {
         return trailMovement;
     }
+    void setPosition(float x, float y) override;
     std::ostream& save(std::ostream& os) const override {
         os << "S" << " " << this->position.x << " " << this->position.y << " " << this->color.toInteger() << " " << this->side << endl;
         return os;
